@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.1.0 (2024-10-22)
+
+### Feat
+
+* feat: Introduced semantic versioning with angular style ([`e9768f7`](https://github.com/mattange/quantfin-macro/commit/e9768f7d225f1b67b4aee6056c00141709e388c0))
+
+### Other
+
+* :sparkles: Added creation of releases ([`c1904a0`](https://github.com/mattange/quantfin-macro/commit/c1904a0a181f792a3065daed454f72d9e4741ac4))
+
+* :checkered_flag: : Switched back to emoji ([`ea4091f`](https://github.com/mattange/quantfin-macro/commit/ea4091f09aa954dfa4cac2b1966820ee0af1c87f))
+
+
 ## v0.0.0 (2024-10-21)
 
 ### Other
