@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "quantfin-macro"
-version = "0.1.0"
+version = "0.1.1"
 description = "QuantFin collection - Macro related utilities and functions"
 authors = ["Matteo Angeloni <mattange@gmail.com>"]
 maintainers = ["Matteo Angeloni <mattange@gmail.com>"]
