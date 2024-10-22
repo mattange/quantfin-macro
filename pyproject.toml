@@ -9,7 +9,7 @@ license = "MIT"
 packages = [{include = "quantfin", from = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11.0"
 seaborn = "^0.13.2"
 great-tables = "^0.13.0"
 matplotlib = "^3.9.2"
