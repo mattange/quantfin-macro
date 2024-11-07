@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.1.2 (2024-11-07)
+
+### :checkered_flag:
+
+* :checkered_flag: added line and shade chart and fixed ([`45f8890`](https://github.com/mattange/quantfin-macro/commit/45f88901511d29d74d5f5380ae1bbfe479cf5c28))
+
+
 ## v0.1.1 (2024-10-22)
 
 ### :ambulance:
