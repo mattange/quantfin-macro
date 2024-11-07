@@ -2,14 +2,14 @@ from matplotlib import pyplot as plt
 from matplotlib.axes import Axes
 import seaborn.objects as so
 import pandas as pd
-from typing import Tuple
+from typing import Literal
 
 
 def draw_components_and_line_chart(df: pd.DataFrame, 
                                    total_line_label: str | None = None, 
-                                   component_design: str = "bar",
+                                   component_design: Literal["bar","area"] = "bar",
                                    ax: Axes | None = None,
-                                   ) -> Tuple | None:
+                                   ) -> tuple | None:
     """
     Generates a component chart using Seaborn for the dataframe provided.
     The dataframe needs to have all columns properly labelled, and both
@@ -18,20 +18,23 @@ def draw_components_and_line_chart(df: pd.DataFrame,
 
     Args:
         df (pd.Dataframe): the original dataframe.
-        total_line_label (str | None): the label to give to the total line or None
-            if a total line is not desired; defaults to None.
-        component_design (str): the component to represent the data. "bar" generates
-            a stacked bar chart and "area" generates a stacked area chart; 
-            defaults to "bar".
-        ax (Axes | None): the axes over which to draw the chart or None if a new 
-            figure and axes are required; defaults to None.
+        total_line_label (str | None, optional): the label to give to the total line
+            or None if a total line is not desired. Defaults to None.
+        component_design (Literal[&quot;bar&quot;,&quot;area&quot;], optional): 
+            the component to represent the data. "bar" generates
+            a stacked bar chart and "area" generates a stacked area chart. 
+            Defaults to "bar".
+        ax (Axes | None, optional): the axes over which to draw the chart or  
+            None if a new figure and axes are required. Defaults to None.
 
+    Raises:
+        RuntimeWarning: possible runtime warnings about colums and index names 
+            being missing. Sensible defaults will be generated.            
+            
     Returns:
-        Tuple | None: returns (fig, ax) if ax is not provided in input, else None.
+        tuple | None: returns (fig, ax) if ax is not provided in input, else None.
 
     """
-    assert(component_design in ["bar", "area"])
-
     if df.columns.name is None:
         raise RuntimeWarning("df.columns does not have a name, it will be auto-generated. Remove this warning by explicitly setting df.columns.name to something meaningful")
     if isinstance(df.index, pd.MultiIndex):
@@ -83,10 +86,13 @@ def draw_components_and_line_chart(df: pd.DataFrame,
         ax = fig.subplots();
         if total_line_label is not None:
             fig.suptitle(total_line_label + " - decomposition");
+        provide_return = True
+    else:
+        provide_return = False
 
     # display the plot
     pl.on(ax).show()
 
     # return the new figure details if needed
-    if ax is None:
+    if provide_return:
         return fig, ax
