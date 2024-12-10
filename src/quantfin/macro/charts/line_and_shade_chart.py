@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 from typing import Literal
 from matplotlib.axes import Axes
+import seaborn as sns
 import seaborn.objects as so
 import pandas as pd
 
@@ -8,6 +9,10 @@ def draw_line_and_shade_chart(df_or_series: pd.DataFrame | pd.Series,
                               shading: pd.Series,
                               v_h: Literal["vertical","horizontal"] = "vertical",
                               ax: Axes | None = None,
+                              linewidth: int = 1,
+                              alpha: float = 0.3,
+                              legend_position: str | int = "upper left",
+                              move_legend_kwargs: dict = {},
                               ) -> tuple | None:
     """
     Generates a line chart using Seaborn for the dataframe or series provided.
@@ -27,6 +32,15 @@ def draw_line_and_shade_chart(df_or_series: pd.DataFrame | pd.Series,
             index is of dates) or the other way around. Defaults to "vertical".
         ax (Axes | None, optional): the axes over which to draw the chart or  
             None if a new figure and axes are required. Defaults to None.
+        linewidth (int, optional): the linewidth for the charts. Defaults to 1.
+        alpha (float, optional): the alpha (transparency) for the shadings. 
+            Defaults to 0.3.
+        legend_position (str | int): the legend position according to Seaborn
+            documentation of ``move_legend``. Defaults to upper left. 
+        move_legend_kwargs (dict, optional): the keyword arguments position for the 
+            legend, according to Seaborn documentation of ``move_legend``. 
+            Defaults to empty dictionary.
+
 
     Raises:
         RuntimeWarning: possible runtime warnings about colums and index names 
@@ -56,12 +70,11 @@ def draw_line_and_shade_chart(df_or_series: pd.DataFrame | pd.Series,
     x = dfs.index.names[0]
     y = dfs.name
     hue = dfs.index.names[1]
-    # prepare the chart adding positive and negative values 
-    # separately and if required the total line
+    # prepare the chart
     pl = (
         so
         .Plot(data=dfc, x=x, y=y, color=hue)
-        .add(so.Line(linewidth=1))
+        .add(so.Line(linewidth=linewidth))
         .label(x=x, y="")
     )
 
@@ -70,6 +83,7 @@ def draw_line_and_shade_chart(df_or_series: pd.DataFrame | pd.Series,
         ax = fig.subplots();
         provide_return = True
     else:
+        fig = ax.get_figure()
         provide_return = False
     
     still_valid = ~shading.shift(-1).isna()
@@ -84,10 +98,13 @@ def draw_line_and_shade_chart(df_or_series: pd.DataFrame | pd.Series,
         shade_func = ax.axhspan
     
     for i, s in enumerate(shade_start):
-        shade_func(s, shade_end[i], alpha=0.3, color='grey', edgecolor=None, zorder=1)
+        shade_func(s, shade_end[i], alpha=alpha, color='grey', edgecolor=None, zorder=1)
 
     # display the plot
-    pl.on(ax).show()
+    pl.on(ax).plot()
+    legend = fig.legends.pop()
+    ax.legend(legend.legend_handles, [t.get_text() for t in legend.texts])
+    sns.move_legend(ax, legend_position, **move_legend_kwargs)
 
     # return the new figure details if needed
     if provide_return:
